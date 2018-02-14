@@ -6,6 +6,7 @@
 package com.sg.flooringmastery.ui;
 
 import com.sg.flooringmastery.dto.Order;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -66,6 +67,8 @@ public class FlooringMasteryView {
     }
 
     public void displayOrderList(List<Order> orders) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        
         for (Order currentOrder : orders) {
             if (!currentOrder.isDeleted()) {
                 System.out.println(
@@ -73,29 +76,31 @@ public class FlooringMasteryView {
                         + "Customer: " + currentOrder.getCustomerName() + " | "
                         + "State: " + currentOrder.getState() + " | "
                         + "Product: " + currentOrder.getProductType() + " | "
-                        + "Material Cost: " + currentOrder.getMaterialCost() + " | "
-                        + "Labor Cost: " + currentOrder.getLaborCost() + " | "
-                        + "Tax Total: " + currentOrder.getTotalTax() + " | "
-                        + "Order Total: " + currentOrder.getOrderTotal());
+                        + "Material Cost: " + formatter.format(currentOrder.getMaterialCost()) + " | "
+                        + "Labor Cost: " + formatter.format(currentOrder.getLaborCost()) + " | "
+                        + "Tax Total: " + formatter.format(currentOrder.getTotalTax()) + " | "
+                        + "Order Total: " + formatter.format(currentOrder.getOrderTotal()));
             }
         }
     }
 
     public void displayOrder(Order order) {
-        io.print("*****  New Order Summary *****");
-        io.print("Order No: " + order.getOrderNumber() + " | "
-                + "Customer: " + order.getCustomerName() + " | "
-                + "State: " + order.getState() + " | "
-                + "Tax Rate: " + order.getTaxRate() + " | "
-                + "Product: " + order.getProductType() + " | "
-                + "Area: " + order.getArea() + " | "
-                + "Material Cost PSqF: " + order.getCostPerSquareFoot() + " | "
-                + "Labor Cost PSqF: " + order.getLaborCostPerSquareFoot() + " | "
-                + "Material Cost: " + order.getMaterialCost() + " | "
-                + "Labor Cost: " + order.getLaborCost() + " | "
-                + "Tax Total: " + order.getTotalTax() + " | "
-                + "Order Total: " + order.getOrderTotal());
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
         
+        io.print("*****  Order Summary *****");
+        io.print("Order No: " + order.getOrderNumber() + "\n"
+                + "Customer: " + order.getCustomerName() + "\n"
+                + "State: " + order.getState() + "\n"
+                + "Tax Rate: " + order.getTaxRate() + "\n"
+                + "Product: " + order.getProductType() + "\n"
+                + "Area: " + order.getArea() + "\n"
+                + "Material Cost (per square foot): " + formatter.format(order.getCostPerSquareFoot()) + "\n"
+                + "Labor Cost (per square foot): " + formatter.format(order.getLaborCostPerSquareFoot()) + "\n"
+                + "Material Cost: " + formatter.format(order.getMaterialCost()) + "\n"
+                + "Labor Cost: " + formatter.format(order.getLaborCost()) + "\n"
+                + "Tax Total: " + formatter.format(order.getTotalTax()) + "\n"
+                + "Order Total: " + formatter.format(order.getOrderTotal()));
+
         io.print("");
     }
 
@@ -117,7 +122,7 @@ public class FlooringMasteryView {
 //        newOrder.setLaborCost(io.readBigDecimal("Enter the total labor cost:"));
 
         io.print("");
-        
+
         return newOrder;
     }
 
@@ -130,7 +135,7 @@ public class FlooringMasteryView {
         for (String state : states) {
             io.print(state);
         }
-        
+
         String state = io.readString("Choose from the states listed above:").toUpperCase();
         io.print("");
         return state;
@@ -145,10 +150,82 @@ public class FlooringMasteryView {
         for (String product : validProducts) {
             io.print(product);
         }
-        
+
         String product = io.readString("Choose from the products listed above.").toUpperCase();
         io.print("");
         return product;
     }
+
+    public boolean promptUserToCommitChanges() {
+        while (true) {
+            String userInputString = 
+                    io.readString("Would you like to apply your changes? Enter (y)es or (n)o:");
+            
+            switch (userInputString.toLowerCase().charAt(0)) {
+                case 'y':
+                    return true;
+                case 'n':
+                    return false;
+                default:
+                    io.print("Invalid entry.  Please enter yes or no to continue.");
+                    break;
+            }
+        }
+    }
+    
+    public boolean promptUserToCommitDelete() {
+        while (true) {
+            String userInputString = 
+                    io.readString("Are you sure you would like to delete this order? Enter (y)es or (n)o:");
+            
+            switch (userInputString.toLowerCase().charAt(0)) {
+                case 'y':
+                    return true;
+                case 'n':
+                    return false;
+                default:
+                    io.print("Invalid entry.  Please enter yes or no to continue.");
+                    break;
+            }
+        }
+    }
+
+    public void displayOrderNotCreatedBanner() {
+        io.print("");
+        io.print("*****  Order was not created  *****");
+    }
+
+    public void displayOrderCreatedSuccessBanner() {
+        io.print("");
+        io.print("*****  Order created successfully  *****");
+    }
+
+    public void displaySaveErrorBanner() {
+        io.print("");
+        io.print("*****  Unable to save order  *****");
+    }
+
+    public void displayRemoveOrderBanner() {
+        io.print("");
+        io.print("*****  Delete Order  *****");
+    }
+
+    public int promptUserForOrderNumber() {
+        return io.readInt("Enter the order number:");
+    }
+
+    public void displayOrderDeleteSuccessBanner(Order removedOrder) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void displayNoOrderFoundMessage() {
+        io.print("No orders found matching search criteria.");
+    }
+
+    public void displayMarkedForDeleteBanner() {
+        io.print("*****  Order is marked for deletion. It will not be deleted until current work is saved.  *****");
+    }
+
+
 
 }

@@ -32,5 +32,11 @@ public interface FlooringMasteryServiceLayer {
             InvalidProductException;
 
     public Set<String> getValidProductsList() throws FlooringMasteryPersistenceException;
+
+    public Order saveOrder(Order newOrder) throws FlooringMasteryPersistenceException;
+
+//    public Order removeOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException;
+
+    public Order getOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException;
     
 }

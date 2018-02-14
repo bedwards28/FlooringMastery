@@ -102,7 +102,7 @@ public class FlooringMasteryController {
                 newOrder.setState(getValidState());
             }
         }
-        
+
         // get product details
         while (true) {
             try {
@@ -114,20 +114,61 @@ public class FlooringMasteryController {
             }
         }
 
+        // get remaining order details
+        newOrder.setOrderDate(LocalDate.now());
+        newOrder.setMaterialCost();
+        newOrder.setLaborCost();
+        newOrder.setTotalTax();
+        newOrder.setOrderTotal();
+
         // display order summary
         view.displayOrder(newOrder);
 
         // ask user if they want to commit changes
+        boolean commit = view.promptUserToCommitChanges();
         // if no, discard and return to main
         // if yes, save changes and return to main
+        if (commit) {
+            // save changes
+            try {
+                service.saveOrder(newOrder);
+                view.displayOrderCreatedSuccessBanner();
+            } catch (FlooringMasteryPersistenceException e) {
+                view.displaySaveErrorBanner();
+            }
+
+        } else {
+            // discard changes and return to main menu
+            view.displayOrderNotCreatedBanner();
+        }
     }
 
     private void editOrder() {
         System.out.println("edit order");
     }
 
-    private void removeOrder() {
-        System.out.println("remove order");
+    private void removeOrder() throws FlooringMasteryPersistenceException {
+        boolean commit;
+//        Order removedOrder = null;
+
+        view.displayRemoveOrderBanner();
+        LocalDate date = view.promptUserForDate();
+        int orderNumber = view.promptUserForOrderNumber();
+        
+//        Order removedOrder = service.removeOrder(date, orderNumber);
+        Order removedOrder = service.getOrder(date, orderNumber);
+
+        if (removedOrder != null) {
+            view.displayOrder(removedOrder);
+            commit = view.promptUserToCommitDelete();
+            if (commit) {
+//                removedOrder = service.removeOrder(date, orderNumber);
+                removedOrder.setDeleted(true);
+                view.displayMarkedForDeleteBanner();
+            }
+        } else {
+            view.displayNoOrderFoundMessage();
+        }
     }
 
     private void saveCurrentWork() {
@@ -141,7 +182,7 @@ public class FlooringMasteryController {
     private void exitMessage() {
         view.displayExitBanner();
     }
-    
+
     private String getValidState() throws FlooringMasteryPersistenceException {
         Set<String> validStates = service.getTaxStates();
         return view.promptUserForValidState(validStates).toUpperCase();

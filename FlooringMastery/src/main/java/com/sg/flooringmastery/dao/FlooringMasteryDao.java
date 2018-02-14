@@ -21,6 +21,8 @@ public interface FlooringMasteryDao {
     
     Order addOrder(Order order) throws FlooringMasteryPersistenceException;
     
+//    Order removeOrder(Order removedOrder) throws FlooringMasteryPersistenceException;
+    
     Order removeOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException;
     
     List<Order> getAllOrdersForDate(LocalDate date) throws FlooringMasteryPersistenceException;
@@ -42,5 +44,5 @@ public interface FlooringMasteryDao {
     Map<String, Product> getProductList() throws FlooringMasteryPersistenceException;
     
     Map<String, Tax> getStateTaxRatesList() throws FlooringMasteryPersistenceException;
-            
+
 }

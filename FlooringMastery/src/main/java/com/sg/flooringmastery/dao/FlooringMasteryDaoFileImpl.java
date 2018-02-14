@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -44,8 +43,23 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
     @Override
     public Order addOrder(Order order) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            loadOrdersList(LocalDate.now());  // load current date file if needed before adding new order
+        } catch (FlooringMasteryPersistenceException e) {
+            // This catch will never trigger.  If the loadOrdersList throws an exception, or not,
+            // we want the finally block to add the order to the orderlist hashmap
+        } finally {
+            orderList.put(order.getOrderNumber(), order);
+        }
+        
+        return order;
     }
+    
+//    @Override
+//    public Order removeOrder(Order order) throws FlooringMasteryPersistenceException {
+//        Order removedOrder = orderList.remove(order.getOrderNumber());
+//        return removedOrder;
+//    }
 
     @Override
     public Order removeOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
@@ -63,7 +77,13 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
     @Override
     public Order getOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            loadOrdersList(date);  // load current date file if needed before adding new order
+        } catch (FlooringMasteryPersistenceException e) {
+            return null;
+        }
+        
+        return orderList.get(orderId);
     }
 
     @Override
@@ -159,7 +179,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
                 currentOrder.setLaborCost(new BigDecimal(currentTokens[9]));
                 currentOrder.setTotalTax(new BigDecimal(currentTokens[10]));
                 currentOrder.setOrderTotal(new BigDecimal(currentTokens[11]));
-                currentOrder.setDeleted(Boolean.parseBoolean(currentTokens[12]));
+//                currentOrder.setDeleted(Boolean.parseBoolean(currentTokens[12]));
 
                 currentOrder.setOrderDate(date);
 

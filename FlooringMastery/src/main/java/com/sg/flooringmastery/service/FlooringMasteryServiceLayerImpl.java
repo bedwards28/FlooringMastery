@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -57,10 +58,10 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     } // end getNewOrderNumber
 
     @Override
-    public Order getTaxDetails(Order order) throws 
-            FlooringMasteryPersistenceException, 
+    public Order getTaxDetails(Order order) throws
+            FlooringMasteryPersistenceException,
             InvalidStateException {
-        
+
         Map<String, Tax> taxList = dao.getStateTaxRatesList();
         Set keys = taxList.keySet();
 
@@ -80,20 +81,20 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
 
     @Override
-    public Order getProductDetails(Order order) throws 
-            FlooringMasteryPersistenceException, 
+    public Order getProductDetails(Order order) throws
+            FlooringMasteryPersistenceException,
             InvalidProductException {
-        
+
         Map<String, Product> productList = dao.getProductList();
         Set<String> productKeys = productList.keySet();
-        
+
         if (productKeys.contains(order.getProductType().toUpperCase())) {
             order.setCostPerSquareFoot(productList.get(order.getProductType().toUpperCase()).getCostPerSquareFoot());
             order.setLaborCostPerSquareFoot(productList.get(order.getProductType().toUpperCase()).getLaborCostPerSquareFoot());
         } else {
             throw new InvalidProductException("Invalid Product Entered");
         }
-        
+
         return order;
     }
 
@@ -101,4 +102,44 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     public Set<String> getValidProductsList() throws FlooringMasteryPersistenceException {
         return dao.getProductList().keySet();
     }
+
+    @Override
+    public Order saveOrder(Order newOrder) throws FlooringMasteryPersistenceException {
+        dao.addOrder(newOrder);
+        return newOrder;
+    }
+
+//    @Override
+//    public Order removeOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException {
+//        Order removedOrder = null;
+//        List<Order> orders;
+//        
+//        try {
+//            orders = getOrdersListByDate(date);
+//        } catch (FlooringMasteryPersistenceException e) {
+//            return removedOrder;
+//        }
+//        
+//
+//        orders = orders.stream()
+//                .filter(o -> o.getOrderNumber() == orderNumber)
+//                .collect(Collectors.toList());
+//
+//        if (orders.size() == 1) {
+//            removedOrder = orders.get(0);
+//        }
+//        
+//        if (removedOrder != null) {
+////            dao.removeOrder(removedOrder);
+//            removedOrder.setDeleted(true);
+//        }
+//
+//        return removedOrder;
+//    }
+
+    @Override
+    public Order getOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException {
+        return dao.getOrder(date, orderNumber);
+    }
+
 }

@@ -161,11 +161,9 @@ public class UserIOConsoleImpl implements UserIO {
 
     @Override
     public BigDecimal readBigDecimal(String prompt) {
-//        BigDecimal userInputBd;
-
-        String userInputString = readString(prompt);
 
         while (true) {
+            String userInputString = readString(prompt);
             try {
                 return new BigDecimal(userInputString);
             } catch (NumberFormatException e) {

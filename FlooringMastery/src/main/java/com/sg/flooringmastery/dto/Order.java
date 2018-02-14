@@ -15,8 +15,7 @@ import java.time.LocalDate;
 public class Order {
     
     private final int orderNumber;
-    private LocalDate orderDate;
-//    private int customerId;
+    private LocalDate orderDate;  
     private String customerName;
     private String state;
     private BigDecimal taxRate;
@@ -24,11 +23,11 @@ public class Order {
     private BigDecimal area;
     private BigDecimal costPerSquareFoot;
     private BigDecimal laborCostPerSquareFoot;
-    private BigDecimal materialCost;
+    private BigDecimal materialCost; 
     private BigDecimal laborCost;
     private BigDecimal totalTax;
     private BigDecimal orderTotal;
-    private boolean deleted;
+    private boolean deleted;  // have to remove this
     
     public Order(int orderNumber) {
         this.orderNumber = orderNumber;
@@ -45,15 +44,6 @@ public class Order {
     public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
-
-//    public int getCustomerId() {
-//        return customerId;
-//    }
-//
-//    // do i want this since customer ID should be immutable?
-//    public void setCustomerId(int customerId) {
-//        this.customerId = customerId;
-//    }
 
     public String getCustomerName() {
         return customerName;
@@ -112,7 +102,11 @@ public class Order {
     }
 
     public BigDecimal getMaterialCost() {
-        return materialCost;
+        return costPerSquareFoot.multiply(area);
+    }
+    
+    public void setMaterialCost() {
+        materialCost = getMaterialCost();
     }
 
     public void setMaterialCost(BigDecimal materialCost) {
@@ -120,7 +114,11 @@ public class Order {
     }
 
     public BigDecimal getLaborCost() {
-        return laborCost;
+        return laborCostPerSquareFoot.multiply(area);
+    }
+    
+    public void setLaborCost() {
+        laborCost = getLaborCost();
     }
 
     public void setLaborCost(BigDecimal laborCost) {
@@ -128,15 +126,23 @@ public class Order {
     }
 
     public BigDecimal getTotalTax() {
-        return totalTax;
+        return getMaterialCost().add(getLaborCost()).multiply(taxRate).divide(new BigDecimal("100"));
     }
 
+    public void setTotalTax() {
+        totalTax = getTotalTax();
+    }
+    
     public void setTotalTax(BigDecimal totalTax) {
         this.totalTax = totalTax;
     }
 
     public BigDecimal getOrderTotal() {
-        return orderTotal;
+        return getMaterialCost().add(getLaborCost()).add(getTotalTax());
+    }
+    
+    public void setOrderTotal() {
+        orderTotal = getOrderTotal();
     }
 
     public void setOrderTotal(BigDecimal orderTotal) {
@@ -183,7 +189,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" + "orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", customerName=" + customerName + ", state=" + state + ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot=" + costPerSquareFoot + ", laborCostPerSquareFoot=" + laborCostPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" + laborCost + ", totalTax=" + totalTax + ", orderTotal=" + orderTotal + ", deleted=" + deleted + '}';
+        return "Order{" + "orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", customerName=" + customerName + ", state=" + state + ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot=" + costPerSquareFoot + ", laborCostPerSquareFoot=" + laborCostPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" + laborCost + ", totalTax=" + totalTax + ", orderTotal=" + orderTotal + '}';
     }
     
     

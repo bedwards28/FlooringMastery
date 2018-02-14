@@ -1,2 +1,2 @@
-OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total,Deleted
-2,Edwards,MN,6.25,Steel,100.00,5.15,4.75,515.00,475.00,61.88,1051.88,false
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
+2,Edwards,MN,6.25,Steel,100.00,5.15,4.75,515.00,475.00,61.88,1051.88
