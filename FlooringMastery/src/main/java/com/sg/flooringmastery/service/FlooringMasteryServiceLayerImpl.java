@@ -6,19 +6,99 @@
 package com.sg.flooringmastery.service;
 
 import com.sg.flooringmastery.dao.FlooringMasteryDao;
+import com.sg.flooringmastery.dao.FlooringMasteryPersistenceException;
+import com.sg.flooringmastery.dto.Order;
+import com.sg.flooringmastery.dto.Product;
+import com.sg.flooringmastery.dto.Tax;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author blake
  */
 public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLayer {
-    
+
     private FlooringMasteryDao dao;
 
     public FlooringMasteryServiceLayerImpl(FlooringMasteryDao dao) {
         this.dao = dao;
     }
-    
-    
-    
+
+    @Override
+    public List<Order> getOrdersListByDate(LocalDate date) throws FlooringMasteryPersistenceException {
+        return dao.getAllOrdersForDate(date);
+    }
+
+    @Override
+    public int getNewOrderNumber() throws FlooringMasteryPersistenceException {
+        int orderNumber;
+        List<Order> orders;
+        int dayShift = 0;
+
+        while (true) {
+            try {
+                orders = getOrdersListByDate(LocalDate.now().minusDays(dayShift));
+                break;
+            } catch (FlooringMasteryPersistenceException e) {
+                dayShift++;
+            }
+        }
+
+        orderNumber = orders.stream()
+                .mapToInt(Order::getOrderNumber)
+                .max()
+                .getAsInt() + 1;
+
+        return orderNumber;
+    } // end getNewOrderNumber
+
+    @Override
+    public Order getTaxDetails(Order order) throws 
+            FlooringMasteryPersistenceException, 
+            InvalidStateException {
+        
+        Map<String, Tax> taxList = dao.getStateTaxRatesList();
+        Set keys = taxList.keySet();
+
+        if (keys.contains(order.getState().toUpperCase())) {
+            BigDecimal taxRate = taxList.get(order.getState()).getTaxRate();
+            order.setTaxRate(taxRate);
+        } else {
+            throw new InvalidStateException("Invalid state entered.");
+        }
+
+        return order;
+    }
+
+    @Override
+    public Set getTaxStates() throws FlooringMasteryPersistenceException {
+        return dao.getStateTaxRatesList().keySet();
+    }
+
+    @Override
+    public Order getProductDetails(Order order) throws 
+            FlooringMasteryPersistenceException, 
+            InvalidProductException {
+        
+        Map<String, Product> productList = dao.getProductList();
+        Set<String> productKeys = productList.keySet();
+        
+        if (productKeys.contains(order.getProductType().toUpperCase())) {
+            order.setCostPerSquareFoot(productList.get(order.getProductType().toUpperCase()).getCostPerSquareFoot());
+            order.setLaborCostPerSquareFoot(productList.get(order.getProductType().toUpperCase()).getLaborCostPerSquareFoot());
+        } else {
+            throw new InvalidProductException("Invalid Product Entered");
+        }
+        
+        return order;
+    }
+
+    @Override
+    public Set<String> getValidProductsList() throws FlooringMasteryPersistenceException {
+        return dao.getProductList().keySet();
+    }
 }

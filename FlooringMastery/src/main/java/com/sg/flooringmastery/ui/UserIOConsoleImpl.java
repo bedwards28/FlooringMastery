@@ -5,6 +5,7 @@
  */
 package com.sg.flooringmastery.ui;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ import java.util.Scanner;
  * @author blake
  */
 public class UserIOConsoleImpl implements UserIO {
-    
+
     private Scanner sc = new Scanner(System.in);
     private String userInputString;
 
@@ -29,7 +30,7 @@ public class UserIOConsoleImpl implements UserIO {
 
         while (true) {
             userInputString = sc.nextLine();
-            
+
             try {
                 userInput = Double.parseDouble(userInputString);
                 break;
@@ -44,15 +45,15 @@ public class UserIOConsoleImpl implements UserIO {
     @Override
     public double readDouble(String prompt, double min, double max) {
         double userInput;
-        
+
         // Add currency formatter for vending machine project
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        
-        userInput = readDouble(prompt + " between " 
-                + formatter.format(min) + " and " 
+
+        userInput = readDouble(prompt + " between "
+                + formatter.format(min) + " and "
                 + formatter.format(max));
-        
-        while(userInput < min || userInput > max){
+
+        while (userInput < min || userInput > max) {
             userInput = readDouble("Please enter a valid number between " + min + " and " + max);
         }
         return userInput;
@@ -65,7 +66,7 @@ public class UserIOConsoleImpl implements UserIO {
 
         while (true) {
             userInputString = sc.nextLine();
-            
+
             try {
                 userInput = Float.parseFloat(userInputString);
                 break;
@@ -80,10 +81,10 @@ public class UserIOConsoleImpl implements UserIO {
     @Override
     public float readFloat(String prompt, float min, float max) {
         float userInput;
-        
+
         userInput = readFloat(prompt + " between " + min + " and " + max);
-        
-        while(userInput < min || userInput > max){
+
+        while (userInput < min || userInput > max) {
             userInput = readFloat("Please enter a valid number between " + min + " and " + max);
         }
         return userInput;
@@ -93,11 +94,10 @@ public class UserIOConsoleImpl implements UserIO {
     public int readInt(String prompt) {
         int userInput = 0;
         print(prompt);
-        
 
         while (true) {
             userInputString = sc.nextLine();
-            
+
             try {
                 userInput = Integer.parseInt(userInputString);
                 break;
@@ -112,10 +112,10 @@ public class UserIOConsoleImpl implements UserIO {
     @Override
     public int readInt(String prompt, int min, int max) {
         int userInput;
-        
+
         userInput = readInt(prompt);
-        
-        while(userInput < min || userInput > max){
+
+        while (userInput < min || userInput > max) {
             userInput = readInt("Please enter a valid number between " + min + " and " + max);
         }
         return userInput;
@@ -125,11 +125,10 @@ public class UserIOConsoleImpl implements UserIO {
     public long readLong(String prompt) {
         long userInput = 0;
         print(prompt);
-        
 
         while (true) {
             userInputString = sc.nextLine();
-            
+
             try {
                 userInput = Long.parseLong(userInputString);
                 break;
@@ -144,10 +143,10 @@ public class UserIOConsoleImpl implements UserIO {
     @Override
     public long readLong(String prompt, long min, long max) {
         long userInput;
-        
+
         userInput = readLong(prompt + " between " + min + " and " + max);
-        
-        while(userInput < min || userInput > max){
+
+        while (userInput < min || userInput > max) {
             userInput = readLong("Please enter a valid number between " + min + " and " + max);
         }
         return userInput;
@@ -159,5 +158,20 @@ public class UserIOConsoleImpl implements UserIO {
         userInputString = sc.nextLine();
         return userInputString;
     }
-    
+
+    @Override
+    public BigDecimal readBigDecimal(String prompt) {
+//        BigDecimal userInputBd;
+
+        String userInputString = readString(prompt);
+
+        while (true) {
+            try {
+                return new BigDecimal(userInputString);
+            } catch (NumberFormatException e) {
+                print(userInputString + " is not a valid entry. Please enter a valid number:");
+            }
+        }
+    }
+
 }

@@ -6,7 +6,7 @@
 package com.sg.flooringmastery.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  *
@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class Order {
     
     private final int orderNumber;
-    private LocalDateTime orderDate;
-    private int customerId;
+    private LocalDate orderDate;
+//    private int customerId;
     private String customerName;
     private String state;
     private BigDecimal taxRate;
@@ -28,7 +28,7 @@ public class Order {
     private BigDecimal laborCost;
     private BigDecimal totalTax;
     private BigDecimal orderTotal;
-    private boolean isDeleted;
+    private boolean deleted;
     
     public Order(int orderNumber) {
         this.orderNumber = orderNumber;
@@ -38,22 +38,22 @@ public class Order {
         return orderNumber;
     }
 
-    public LocalDateTime getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    // do i want this since customer ID should be immutable?
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+//    public int getCustomerId() {
+//        return customerId;
+//    }
+//
+//    // do i want this since customer ID should be immutable?
+//    public void setCustomerId(int customerId) {
+//        this.customerId = customerId;
+//    }
 
     public String getCustomerName() {
         return customerName;
@@ -143,12 +143,12 @@ public class Order {
         this.orderTotal = orderTotal;
     }
 
-    public boolean isIsDeleted() {
-        return isDeleted;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override
@@ -176,9 +176,14 @@ public class Order {
         return true;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Order{" + "orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", customerName=" + customerName + '}';
+//    }
+
     @Override
     public String toString() {
-        return "Order{" + "orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", customerName=" + customerName + '}';
+        return "Order{" + "orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", customerName=" + customerName + ", state=" + state + ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot=" + costPerSquareFoot + ", laborCostPerSquareFoot=" + laborCostPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" + laborCost + ", totalTax=" + totalTax + ", orderTotal=" + orderTotal + ", deleted=" + deleted + '}';
     }
     
     

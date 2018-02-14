@@ -10,8 +10,8 @@ import com.sg.flooringmastery.dto.Order;
 import com.sg.flooringmastery.dto.Product;
 import com.sg.flooringmastery.dto.Tax;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -39,8 +39,8 @@ public interface FlooringMasteryDao {
     
     List<Customer> getAllCustomers() throws FlooringMasteryPersistenceException;
     
-    List<Product> getAllProducts() throws FlooringMasteryPersistenceException;
+    Map<String, Product> getProductList() throws FlooringMasteryPersistenceException;
     
-    List<Tax> getTaxRatesList() throws FlooringMasteryPersistenceException;
+    Map<String, Tax> getStateTaxRatesList() throws FlooringMasteryPersistenceException;
             
 }

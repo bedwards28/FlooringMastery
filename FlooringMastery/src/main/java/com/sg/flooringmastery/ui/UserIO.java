@@ -5,6 +5,8 @@
  */
 package com.sg.flooringmastery.ui;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author blake
@@ -29,4 +31,6 @@ public interface UserIO {
     long readLong(String prompt, long min, long max);
 
     String readString(String prompt);
+    
+    BigDecimal readBigDecimal(String prompt);
 }
