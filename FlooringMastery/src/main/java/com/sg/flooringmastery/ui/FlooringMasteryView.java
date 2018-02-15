@@ -27,6 +27,7 @@ public class FlooringMasteryView {
     }
 
     public int displayMainMenuAndGetSelection() {
+        io.print("");
         io.print("***********************************");
         io.print("* <<Flooring Program>>");
         io.print("* 1. Display Orders by Date");
@@ -46,7 +47,8 @@ public class FlooringMasteryView {
     }
 
     public void displayExitBanner() {
-        io.print("Good Bye!!!");
+        io.print("");
+        io.print("GOOD BYE!!!");
     }
 
     public LocalDate promptUserForDate() {
@@ -107,6 +109,7 @@ public class FlooringMasteryView {
     }
 
     public void displaySearchResultsBanner() {
+        io.print("");
         io.print("******  Search Results ******");
     }
 
@@ -153,10 +156,10 @@ public class FlooringMasteryView {
         return product;
     }
 
-    public boolean promptUserToCommitChanges() {
+    public boolean promptUserToCommitCreate() {
         while (true) {
             String userInputString
-                    = io.readString("Would you like to apply your changes? Enter (y)es or (n)o:");
+                    = io.readString("Would you like to create this order? Enter (y)es or (n)o:");
 
             switch (userInputString.toLowerCase().charAt(0)) {
                 case 'y':
@@ -187,14 +190,15 @@ public class FlooringMasteryView {
         }
     }
 
-    public void displayOrderNotCreatedBanner() {
+    public void displayOrderCreateUnsuccessfulBanner() {
         io.print("");
         io.print("*****  Order was not created  *****");
     }
 
-    public void displayOrderCreatedSuccessBanner() {
+    public void displayOrderCreateSuccessBanner() {
         io.print("");
-        io.print("*****  Order created successfully  *****");
+        io.print("*****  Temporary order created successfully  *****");
+        io.print("Please select option 5 (Save current work) from the main menu to make the create permanent.");
     }
 
     public void displaySaveErrorBanner() {
@@ -216,7 +220,8 @@ public class FlooringMasteryView {
     }
 
     public void displayMarkedForDeleteBanner() {
-        io.print("*****  Order is marked for deletion. It will not be deleted until current work is saved.  *****");
+        io.print("*****  Order is marked for deletion  *****");
+        io.print("Select option 5 from the main menu to make the deletion permanent.");
     }
 
     public void displayEditOrderBanner() {
@@ -257,16 +262,17 @@ public class FlooringMasteryView {
     }
 
     public void displayEditSuccessMessage() {
-        io.print("The order has been successfully edited.");
-        io.print("The edit(s) will not be saved until all current work is saved at the main menu.");
+        io.print("The order has been successfully edited.  These edits are temporary.");
+        io.print("Select option 5 (Save current work) at the main menu to make the edits permanent.");
         io.print("");
     }
 
     public void displayTrainingBanner() {
-        io.print("SYSTEM IS IN TRAINING MODE. NO CHANGES CAN BE SAVED.");
+        io.print("******  SYSTEM IS IN TRAINING MODE. NO CHANGES CAN BE SAVED  ******");
     }
 
     public boolean promptUserToSaveChanges() {
+        io.print("");
         io.print("All work for the current session must be saved in order to be retained.");
         io.print("Any changes made since the last system save (Option 5 on the main menu) will be lost if not saved.");
         io.print("Would you like to save your current changes before exiting?");

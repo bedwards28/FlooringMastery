@@ -39,14 +39,14 @@
         <constructor-arg ref="auditDao"/>
     </bean>
     
-<!--    <aop:config>
+    <aop:config>
         <aop:aspect ref="loggingAdvice">
             <aop:after-throwing 
                 method="createExceptionAuditEntry" 
-                pointcut="execution(* com.sg.flooringmastery.*(..))"
+                pointcut="execution(* com.sg.flooringmastery.service.FlooringMasteryServiceLayer.*(..))"
                 throwing="ex"
             />
         </aop:aspect>
-    </aop:config>-->
+    </aop:config>
     
 </beans>

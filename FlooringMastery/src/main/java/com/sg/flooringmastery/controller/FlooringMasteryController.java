@@ -97,54 +97,31 @@ public class FlooringMasteryController {
         int orderNumber = service.getNewOrderNumber();
         Order newOrder = view.getNewOrderDetails(orderNumber);
 
-        // get tax data for order
-        while (true) {
-            try {
-                newOrder = service.getTaxDetails(newOrder);
-                break;
-            } catch (InvalidStateException e) {
-                view.displayInvalidStateBanner();
-                newOrder.setState(getValidState());
-            }
-        }
+        validateStateAndTaxRate(newOrder);
 
-        // get product details
-        while (true) {
-            try {
-                newOrder = service.getProductDetails(newOrder);
-                break;
-            } catch (InvalidProductException e) {
-                view.displayInvalidProductBanner();
-                newOrder.setProductType(getValidProduct());
-            }
-        }
+        validateProductDetails(newOrder);
 
-        // get remaining order details
+        // set remaining order details
         newOrder.setOrderDate(LocalDate.now());
         newOrder.setMaterialCost();
         newOrder.setLaborCost();
         newOrder.setTotalTax();
         newOrder.setOrderTotal();
 
-        // display order summary
         view.displayOrder(newOrder);
 
-        // ask user if they want to commit changes
-        boolean commit = view.promptUserToCommitChanges();
-        // if no, discard and return to main
-        // if yes, save changes and return to main
+        boolean commit = view.promptUserToCommitCreate();
+
         if (commit) {
-            // save changes
             try {
                 service.saveOrder(newOrder);
-                view.displayOrderCreatedSuccessBanner();
+                view.displayOrderCreateSuccessBanner();
             } catch (FlooringMasteryPersistenceException e) {
                 view.displaySaveErrorBanner();
             }
 
         } else {
-            // discard changes and return to main menu
-            view.displayOrderNotCreatedBanner();
+            view.displayOrderCreateUnsuccessfulBanner();
         }
     }
 
@@ -153,33 +130,14 @@ public class FlooringMasteryController {
         LocalDate date = view.promptUserForDate();
         int orderNumber = view.promptUserForOrderNumber();
         Order editOrder = service.getOrder(date, orderNumber);
-//        Order editedOrder = originalOrder;
 
         if (editOrder != null) {
             view.promptUserForEdits(editOrder);
 
-            // validate state
-            while (true) {
-                try {
-                    service.getTaxDetails(editOrder);
-                    break;
-                } catch (InvalidStateException e) {
-                    view.displayInvalidStateBanner();
-                    editOrder.setState(getValidState());
-                }
-            }
+            validateStateAndTaxRate(editOrder);
 
-            // validate product
-            while (true) {
-                try {
-                    editOrder = service.getProductDetails(editOrder);
-                    break;
-                } catch (InvalidProductException e) {
-                    view.displayInvalidProductBanner();
-                    editOrder.setProductType(getValidProduct());
-                }
-            }
-            
+            validateProductDetails(editOrder);
+
             view.displayEditSuccessMessage();
             view.displayOrder(editOrder);
 
@@ -212,7 +170,7 @@ public class FlooringMasteryController {
     private void saveCurrentWork() throws FlooringMasteryPersistenceException {
         boolean isProduction = service.getSystemState();
         if (isProduction) {
-        service.saveCurrentChanges();
+            service.saveCurrentChanges();
         } else {
             view.displayTrainingBanner();
         }
@@ -234,6 +192,30 @@ public class FlooringMasteryController {
     private String getValidProduct() throws FlooringMasteryPersistenceException {
         Set<String> validProducts = service.getValidProductsList();
         return view.promptUserForValidProduct(validProducts);
+    }
+
+    private void validateStateAndTaxRate(Order order) throws FlooringMasteryPersistenceException {
+        while (true) {
+            try {
+                service.getTaxDetails(order);
+                break;
+            } catch (InvalidStateException e) {
+                view.displayInvalidStateBanner();
+                order.setState(getValidState());
+            }
+        }
+    }
+
+    private void validateProductDetails(Order order) throws FlooringMasteryPersistenceException {
+        while (true) {
+            try {
+                service.getProductDetails(order);
+                break;
+            } catch (InvalidProductException e) {
+                view.displayInvalidProductBanner();
+                order.setProductType(getValidProduct());
+            }
+        }
     }
 
 }

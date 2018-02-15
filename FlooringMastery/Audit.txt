@@ -1,0 +1,15 @@
+2018-02-15T14:30:16.989 : InvalidStateException: Order{orderNumber=11, orderDate=2018-02-15, customerName=Willie Wonka, state=MN, taxRate=null, productType=STEEL, area=200, costPerSquareFoot=null, laborCostPerSquareFoot=null, materialCost=null, laborCost=null, totalTax=null, orderTotal=null}: 
+2018-02-15T14:30:23.008 : InvalidProductException: Order{orderNumber=11, orderDate=2018-02-15, customerName=Willie Wonka, state=PA, taxRate=6.75, productType=STEEL, area=200, costPerSquareFoot=null, laborCostPerSquareFoot=null, materialCost=null, laborCost=null, totalTax=null, orderTotal=null}: 
+2018-02-15T14:34:47.099 : InvalidStateException: OrderNumber:11, OrderDate=2018-02-15, State=MN, Product:STEEL: 
+2018-02-15T14:34:52.682 : InvalidProductException: OrderNumber:11, OrderDate=2018-02-15, State=OH, Product:STEEL: 
+2018-02-15T14:39:40.253 : InvalidStateException: OrderNumber:11, OrderDate=2018-02-15, State=PS, Product:WOOD: 
+2018-02-15T15:15:31.967 : InvalidStateException: OrderNumber:12, OrderDate=2018-02-15, State=NORTH POLE, Product:ICE: 
+2018-02-15T15:15:44.085 : InvalidProductException: OrderNumber:12, OrderDate=2018-02-15, State=MI, Product:ICE: 
+2018-02-15T15:23:40.033 : InvalidStateException: OrderNumber:13, OrderDate=2018-02-15, State=MN, Product:WOOD: 
+2018-02-15T15:27:13.037 : InvalidStateException: OrderNumber:13, OrderDate=2018-02-15, State=MN, Product:STEEL: 
+2018-02-15T15:27:17.508 : InvalidStateException: OrderNumber:13, OrderDate=2018-02-15, State=DFSADF, Product:STEEL: 
+2018-02-15T15:27:19.480 : InvalidProductException: OrderNumber:13, OrderDate=2018-02-15, State=MI, Product:STEEL: 
+2018-02-15T15:27:24.170 : InvalidProductException: OrderNumber:13, OrderDate=2018-02-15, State=MI, Product:FDSAFA: 
+2018-02-15T15:28:37.565 : InvalidProductException: OrderNumber:12, OrderDate=2018-02-15, State=MI, Product:FDSAFSD: 
+2018-02-15T15:32:48.083 : InvalidStateException: OrderNumber:13, OrderDate=2018-02-15, State=FDASF, Product:FDSAFSD: 
+2018-02-15T15:32:52.790 : InvalidProductException: OrderNumber:13, OrderDate=2018-02-15, State=PA, Product:FDSAFSD: 

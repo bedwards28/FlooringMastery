@@ -5,7 +5,6 @@
  */
 package com.sg.flooringmastery.dao;
 
-import com.sg.flooringmastery.dto.Customer;
 import com.sg.flooringmastery.dto.Order;
 import com.sg.flooringmastery.dto.Product;
 import com.sg.flooringmastery.dto.Tax;
@@ -50,24 +49,15 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         try {
             loadOrdersList(LocalDate.now());  // load current date file if needed before adding new order
         } catch (FlooringMasteryPersistenceException e) {
-            // This catch will never trigger.  If the loadOrdersList throws an exception, or not,
-            // we want the finally block to add the order to the orderlist hashmap
+            // This catch will never trigger.  The program needs to add the order to the orderList
+            // whether an exception was thrown or not.  An exception here means that no file was found
+            // for today's date.  The file is not a requirement to add an order to the orderList.
         } finally {
             orderList.put(order.getOrderNumber(), order);
         }
 
         return order;
     }
-
-//    @Override
-//    public Order removeOrder(Order order) throws FlooringMasteryPersistenceException {
-//        Order removedOrder = orderList.remove(order.getOrderNumber());
-//        return removedOrder;
-//    }
-//    @Override
-//    public Order removeOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 
     @Override
     public List<Order> getAllOrdersForDate(LocalDate date) throws FlooringMasteryPersistenceException {
@@ -89,22 +79,12 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         return orderList.get(orderId);
     }
 
-//    @Override
-//    public Order editOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-
     @Override
     public void saveCurrentChanges() throws FlooringMasteryPersistenceException {
         PrintWriter out;
         Set<LocalDate> datesWritten = new HashSet<>();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMddyyyy");
 
-//        List<Order> filteredOrderList
-//                = orderList.values().stream()
-//                        .filter(o -> o.isDeleted() == false)
-//                        .collect(Collectors.toList());
-//        for (Order currentOrder : filteredOrderList) {
         for (Order currentOrder : orderList.values()) {
             LocalDate date = currentOrder.getOrderDate();
             String fileName = ORDER_FILE_PREFIX + dateFormatter.format(date) + ".txt";
@@ -180,27 +160,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
                 datesWritten.add(date);
             }
         }
-    }
-
-//    @Override
-//    public Customer addCustomer(Customer customer) throws FlooringMasteryPersistenceException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public Customer removeCustomer(int customerId) throws FlooringMasteryPersistenceException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public Customer editCustomer(int customerId, Customer customer) throws FlooringMasteryPersistenceException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public List<Customer> getAllCustomers() throws FlooringMasteryPersistenceException {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
+    } // end saveCurrentChanges
 
     @Override
     public Map<String, Product> getProductList() throws FlooringMasteryPersistenceException {
@@ -235,13 +195,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
     private void loadOrdersList(LocalDate date) throws FlooringMasteryPersistenceException {
 
-        // clear out old data in order list before populating 
-        // with new items for selected date
-//        Set<Integer> keys = orderList.keySet();
-//        for (Integer orderKey : keys) {
-//            orderList.remove(orderKey);
-//        }
-        // need to check if date has already been loaded into memory before 
+        // need to check if date has already been loaded into memory
         if (!isDateLoaded(date)) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
@@ -280,7 +234,6 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
                 currentOrder.setLaborCost(new BigDecimal(currentTokens[9]));
                 currentOrder.setTotalTax(new BigDecimal(currentTokens[10]));
                 currentOrder.setOrderTotal(new BigDecimal(currentTokens[11]));
-//                currentOrder.setDeleted(Boolean.parseBoolean(currentTokens[12]));
 
                 currentOrder.setOrderDate(date);
 
@@ -367,7 +320,5 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
         return false;
     } // end isDateLoaded
-
-    
 
 }

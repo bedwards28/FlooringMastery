@@ -10,7 +10,6 @@ import com.sg.flooringmastery.dao.FlooringMasteryPersistenceException;
 import com.sg.flooringmastery.dto.Order;
 import com.sg.flooringmastery.dto.Product;
 import com.sg.flooringmastery.dto.Tax;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -108,34 +107,6 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         dao.addOrder(newOrder);
         return newOrder;
     }
-
-//    @Override
-//    public Order removeOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException {
-//        Order removedOrder = null;
-//        List<Order> orders;
-//        
-//        try {
-//            orders = getOrdersListByDate(date);
-//        } catch (FlooringMasteryPersistenceException e) {
-//            return removedOrder;
-//        }
-//        
-//
-//        orders = orders.stream()
-//                .filter(o -> o.getOrderNumber() == orderNumber)
-//                .collect(Collectors.toList());
-//
-//        if (orders.size() == 1) {
-//            removedOrder = orders.get(0);
-//        }
-//        
-//        if (removedOrder != null) {
-////            dao.removeOrder(removedOrder);
-//            removedOrder.setDeleted(true);
-//        }
-//
-//        return removedOrder;
-//    }
 
     @Override
     public Order getOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException {

@@ -182,14 +182,9 @@ public class Order {
         return true;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Order{" + "orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", customerName=" + customerName + '}';
-//    }
-
     @Override
     public String toString() {
-        return "Order{" + "orderNumber=" + orderNumber + ", orderDate=" + orderDate + ", customerName=" + customerName + ", state=" + state + ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot=" + costPerSquareFoot + ", laborCostPerSquareFoot=" + laborCostPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" + laborCost + ", totalTax=" + totalTax + ", orderTotal=" + orderTotal + '}';
+        return "OrderNumber: " + orderNumber + ", OrderDate: " + orderDate + ", State: " + state + ", Product: " + productType;
     }
     
     
