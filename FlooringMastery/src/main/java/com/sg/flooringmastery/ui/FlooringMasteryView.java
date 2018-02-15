@@ -6,6 +6,7 @@
 package com.sg.flooringmastery.ui;
 
 import com.sg.flooringmastery.dto.Order;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -82,6 +83,7 @@ public class FlooringMasteryView {
                         + "Order Total: " + formatter.format(currentOrder.getOrderTotal()));
             }
         }
+        io.print("");
     }
 
     public void displayOrder(Order order) {
@@ -226,6 +228,48 @@ public class FlooringMasteryView {
         io.print("*****  Order is marked for deletion. It will not be deleted until current work is saved.  *****");
     }
 
+    public void displayEditOrderBanner() {
+        io.print("");
+        io.print("*****  Edit Order  *****");
+    }
 
+    public Order promptUserForEdits(Order editOrder) {
+        io.print("Enter edits below.  Hitting enter without making edits will retain original order information.");
+        io.print("The original order information is in parentheses.");
+        String customerName = io.readString("Enter customer name (" + editOrder.getCustomerName() + "): ");
+        String state = io.readString("Enter state (" + editOrder.getState() + "): ").toUpperCase();
+        String productType = io.readString("Enter product type (" + editOrder.getProductType() + "): ").toUpperCase();
+//        BigDecimal area = io.readBigDecimal("Enter total area (" + editOrder.getArea() + "): ");
+        String area = io.readString("Enter total area (" + editOrder.getArea() + "): ");
+        
+        if (!"".equals(customerName)) {
+            editOrder.setCustomerName(customerName);
+        }
+        
+        if (!"".equals(state)) {
+            editOrder.setState(state);
+        }
+        
+        if (!"".equals(productType)) {
+            editOrder.setProductType(productType);
+        }
+        
+        if (!"".equals(area)) {
+            try {
+                BigDecimal areaBd = new BigDecimal(area);
+                editOrder.setArea(areaBd);
+            } catch (NumberFormatException e) {
+                io.print("Invalid area entry. No changes made to order.");
+            }
+        }
+        
+        return editOrder;
+    }
+
+    public void displayEditSuccessMessage() {
+        io.print("The order has been successfully edited.");
+        io.print("The edit(s) will not be saved until all current work is saved at the main menu.");
+        io.print("");
+    }
 
 }

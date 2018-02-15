@@ -143,26 +143,59 @@ public class FlooringMasteryController {
         }
     }
 
-    private void editOrder() {
-        System.out.println("edit order");
+    private void editOrder() throws FlooringMasteryPersistenceException {
+        view.displayEditOrderBanner();
+        LocalDate date = view.promptUserForDate();
+        int orderNumber = view.promptUserForOrderNumber();
+        Order editOrder = service.getOrder(date, orderNumber);
+//        Order editedOrder = originalOrder;
+
+        if (editOrder != null) {
+            view.promptUserForEdits(editOrder);
+
+            // validate state
+            while (true) {
+                try {
+                    service.getTaxDetails(editOrder);
+                    break;
+                } catch (InvalidStateException e) {
+                    view.displayInvalidStateBanner();
+                    editOrder.setState(getValidState());
+                }
+            }
+
+            // validate product
+            while (true) {
+                try {
+                    editOrder = service.getProductDetails(editOrder);
+                    break;
+                } catch (InvalidProductException e) {
+                    view.displayInvalidProductBanner();
+                    editOrder.setProductType(getValidProduct());
+                }
+            }
+            
+            view.displayEditSuccessMessage();
+            view.displayOrder(editOrder);
+
+        } else {
+            view.displayNoOrderFoundMessage();
+        }
     }
 
     private void removeOrder() throws FlooringMasteryPersistenceException {
         boolean commit;
-//        Order removedOrder = null;
 
         view.displayRemoveOrderBanner();
         LocalDate date = view.promptUserForDate();
         int orderNumber = view.promptUserForOrderNumber();
-        
-//        Order removedOrder = service.removeOrder(date, orderNumber);
+
         Order removedOrder = service.getOrder(date, orderNumber);
 
         if (removedOrder != null) {
             view.displayOrder(removedOrder);
             commit = view.promptUserToCommitDelete();
             if (commit) {
-//                removedOrder = service.removeOrder(date, orderNumber);
                 removedOrder.setDeleted(true);
                 view.displayMarkedForDeleteBanner();
             }

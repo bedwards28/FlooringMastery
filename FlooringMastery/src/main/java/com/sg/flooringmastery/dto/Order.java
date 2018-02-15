@@ -27,7 +27,7 @@ public class Order {
     private BigDecimal laborCost;
     private BigDecimal totalTax;
     private BigDecimal orderTotal;
-    private boolean deleted;  // have to remove this
+    private boolean deleted;
     
     public Order(int orderNumber) {
         this.orderNumber = orderNumber;
