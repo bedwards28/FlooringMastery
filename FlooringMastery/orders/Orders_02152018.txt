@@ -1,3 +1,4 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
 8,Anna,PA,6.75,WOOD,5000,5.15,4.75,25750.00,23750.00,3341.2500,52841.2500
 9,Blake,PA,6.75,TILE,5000,3.50,4.15,17500.00,20750.00,2581.8750,40831.8750
+10,Alex,MI,5.75,CARPET,2000,2.25,2.10,4500.00,4200.00,500.2500,9200.2500

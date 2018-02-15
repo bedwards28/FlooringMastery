@@ -36,10 +36,10 @@
     </bean>
     
     <bean id="loggingAdvice" class="com.sg.flooringmastery.advice.LoggingAdvice">
-        <constructor-arg ret="auditDao"/>
+        <constructor-arg ref="auditDao"/>
     </bean>
     
-    <aop:config>
+<!--    <aop:config>
         <aop:aspect ref="loggingAdvice">
             <aop:after-throwing 
                 method="createExceptionAuditEntry" 
@@ -47,6 +47,6 @@
                 throwing="ex"
             />
         </aop:aspect>
-    </aop:config>
+    </aop:config>-->
     
 </beans>

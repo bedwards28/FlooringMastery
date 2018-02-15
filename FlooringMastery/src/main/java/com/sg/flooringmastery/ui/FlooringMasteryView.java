@@ -69,7 +69,7 @@ public class FlooringMasteryView {
 
     public void displayOrderList(List<Order> orders) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        
+
         for (Order currentOrder : orders) {
             if (!currentOrder.isDeleted()) {
                 System.out.println(
@@ -88,7 +88,7 @@ public class FlooringMasteryView {
 
     public void displayOrder(Order order) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        
+
         io.print("*****  Order Summary *****");
         io.print("Order No: " + order.getOrderNumber() + "\n"
                 + "Customer: " + order.getCustomerName() + "\n"
@@ -115,13 +115,8 @@ public class FlooringMasteryView {
         newOrder.setOrderDate(LocalDate.now());
         newOrder.setCustomerName(io.readString("Enter the customer's name:"));
         newOrder.setState(io.readString("Enter the state:").toUpperCase());
-//        newOrder.setTaxRate(io.readBigDecimal("Enter the tax rate:")); // remove this from final build, must have state determine tax rate
-        newOrder.setProductType(io.readString("Enter the product type:").toUpperCase()); // this must be validated against products file
+        newOrder.setProductType(io.readString("Enter the product type:").toUpperCase());
         newOrder.setArea(io.readBigDecimal("Enter the total square footage of the project:"));
-//        newOrder.setCostPerSquareFoot(io.readBigDecimal("Enter the material cost per square foot:"));
-//        newOrder.setLaborCostPerSquareFoot(io.readBigDecimal("Enter the labor cost per square foot:"));
-//        newOrder.setMaterialCost(io.readBigDecimal("Enter the total material cost:"));
-//        newOrder.setLaborCost(io.readBigDecimal("Enter the total labor cost:"));
 
         io.print("");
 
@@ -160,9 +155,9 @@ public class FlooringMasteryView {
 
     public boolean promptUserToCommitChanges() {
         while (true) {
-            String userInputString = 
-                    io.readString("Would you like to apply your changes? Enter (y)es or (n)o:");
-            
+            String userInputString
+                    = io.readString("Would you like to apply your changes? Enter (y)es or (n)o:");
+
             switch (userInputString.toLowerCase().charAt(0)) {
                 case 'y':
                     return true;
@@ -174,12 +169,12 @@ public class FlooringMasteryView {
             }
         }
     }
-    
+
     public boolean promptUserToCommitDelete() {
         while (true) {
-            String userInputString = 
-                    io.readString("Are you sure you would like to delete this order? Enter (y)es or (n)o:");
-            
+            String userInputString
+                    = io.readString("Are you sure you would like to delete this order? Enter (y)es or (n)o:");
+
             switch (userInputString.toLowerCase().charAt(0)) {
                 case 'y':
                     return true;
@@ -216,10 +211,6 @@ public class FlooringMasteryView {
         return io.readInt("Enter the order number:");
     }
 
-    public void displayOrderDeleteSuccessBanner(Order removedOrder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public void displayNoOrderFoundMessage() {
         io.print("No orders found matching search criteria.");
     }
@@ -239,21 +230,20 @@ public class FlooringMasteryView {
         String customerName = io.readString("Enter customer name (" + editOrder.getCustomerName() + "): ");
         String state = io.readString("Enter state (" + editOrder.getState() + "): ").toUpperCase();
         String productType = io.readString("Enter product type (" + editOrder.getProductType() + "): ").toUpperCase();
-//        BigDecimal area = io.readBigDecimal("Enter total area (" + editOrder.getArea() + "): ");
         String area = io.readString("Enter total area (" + editOrder.getArea() + "): ");
-        
+
         if (!"".equals(customerName)) {
             editOrder.setCustomerName(customerName);
         }
-        
+
         if (!"".equals(state)) {
             editOrder.setState(state);
         }
-        
+
         if (!"".equals(productType)) {
             editOrder.setProductType(productType);
         }
-        
+
         if (!"".equals(area)) {
             try {
                 BigDecimal areaBd = new BigDecimal(area);
@@ -262,7 +252,7 @@ public class FlooringMasteryView {
                 io.print("Invalid area entry. No changes made to order.");
             }
         }
-        
+
         return editOrder;
     }
 
@@ -274,6 +264,26 @@ public class FlooringMasteryView {
 
     public void displayTrainingBanner() {
         io.print("SYSTEM IS IN TRAINING MODE. NO CHANGES CAN BE SAVED.");
+    }
+
+    public boolean promptUserToSaveChanges() {
+        io.print("All work for the current session must be saved in order to be retained.");
+        io.print("Any changes made since the last system save (Option 5 on the main menu) will be lost if not saved.");
+        io.print("Would you like to save your current changes before exiting?");
+
+        while (true) {
+            String input = io.readString("Enter (y)es or (n)o to continue.");
+
+            switch (input.toLowerCase().charAt(0)) {
+                case 'y':
+                    return true;
+                case 'n':
+                    return false;
+                default:
+                    io.print("Invalid entry.");
+                    break;
+            }
+        }
     }
 
 }

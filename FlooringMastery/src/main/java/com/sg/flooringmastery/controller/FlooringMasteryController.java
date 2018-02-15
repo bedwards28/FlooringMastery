@@ -26,6 +26,7 @@ public class FlooringMasteryController {
 
     public void run() {
         boolean keepGoing = true;
+        boolean saveChanges = false;
         int menuSelection = 0;
 
         try {
@@ -50,6 +51,10 @@ public class FlooringMasteryController {
                         saveCurrentWork();
                         break;
                     case 6:
+                        saveChanges = view.promptUserToSaveChanges();
+                        if (saveChanges) {
+                            saveCurrentWork();
+                        }
                         keepGoing = false;
                         break;
                     default:
