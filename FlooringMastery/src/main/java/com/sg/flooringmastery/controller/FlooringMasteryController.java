@@ -204,8 +204,13 @@ public class FlooringMasteryController {
         }
     }
 
-    private void saveCurrentWork() {
-        System.out.println("save work");
+    private void saveCurrentWork() throws FlooringMasteryPersistenceException {
+        boolean isProduction = service.getSystemState();
+        if (isProduction) {
+        service.saveCurrentChanges();
+        } else {
+            view.displayTrainingBanner();
+        }
     }
 
     private void unknownCommand() {

@@ -38,5 +38,9 @@ public interface FlooringMasteryServiceLayer {
 //    public Order removeOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException;
 
     public Order getOrder(LocalDate date, int orderNumber) throws FlooringMasteryPersistenceException;
+
+    public boolean getSystemState() throws FlooringMasteryPersistenceException;
+
+    public void saveCurrentChanges() throws FlooringMasteryPersistenceException;
     
 }

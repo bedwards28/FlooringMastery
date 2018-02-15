@@ -23,26 +23,28 @@ public interface FlooringMasteryDao {
     
 //    Order removeOrder(Order removedOrder) throws FlooringMasteryPersistenceException;
     
-    Order removeOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException;
+//    Order removeOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException;
     
     List<Order> getAllOrdersForDate(LocalDate date) throws FlooringMasteryPersistenceException;
     
     Order getOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException;
     
-    Order editOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException;
+//    Order editOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException;
     
     void saveCurrentChanges() throws FlooringMasteryPersistenceException;
     
-    Customer addCustomer(Customer customer) throws FlooringMasteryPersistenceException;
-    
-    Customer removeCustomer(int customerId) throws FlooringMasteryPersistenceException;
-    
-    Customer editCustomer(int customerId, Customer customer) throws FlooringMasteryPersistenceException;
-    
-    List<Customer> getAllCustomers() throws FlooringMasteryPersistenceException;
+//    Customer addCustomer(Customer customer) throws FlooringMasteryPersistenceException;
+//    
+//    Customer removeCustomer(int customerId) throws FlooringMasteryPersistenceException;
+//    
+//    Customer editCustomer(int customerId, Customer customer) throws FlooringMasteryPersistenceException;
+//    
+//    List<Customer> getAllCustomers() throws FlooringMasteryPersistenceException;
     
     Map<String, Product> getProductList() throws FlooringMasteryPersistenceException;
     
     Map<String, Tax> getStateTaxRatesList() throws FlooringMasteryPersistenceException;
+
+    public boolean getSystemState() throws FlooringMasteryPersistenceException;
 
 }

@@ -1,3 +1,2 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1,Wise,OH,6.25,Wood,100.00,5.15,4.75,515.00,475.00,61.88,1051.88
-2,Blake,PA,6.25,Laminate,100,5,4,515,475,61,1050
+1,Wise,PA,6.75,TILE,100.00,3.50,4.15,350.0000,415.0000,51.637500,816.637500

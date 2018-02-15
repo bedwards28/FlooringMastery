@@ -35,4 +35,18 @@
         <constructor-arg ref="view"/>
     </bean>
     
+    <bean id="loggingAdvice" class="com.sg.flooringmastery.advice.LoggingAdvice">
+        <constructor-arg ret="auditDao"/>
+    </bean>
+    
+    <aop:config>
+        <aop:aspect ref="loggingAdvice">
+            <aop:after-throwing 
+                method="createExceptionAuditEntry" 
+                pointcut="execution(* com.sg.flooringmastery.*(..))"
+                throwing="ex"
+            />
+        </aop:aspect>
+    </aop:config>
+    
 </beans>

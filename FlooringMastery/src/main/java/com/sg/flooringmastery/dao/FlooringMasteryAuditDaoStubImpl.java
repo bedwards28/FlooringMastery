@@ -9,6 +9,11 @@ package com.sg.flooringmastery.dao;
  *
  * @author blake
  */
-public class FlooringMasteryAuditDaoSubImpl {
+public class FlooringMasteryAuditDaoStubImpl implements FlooringMasteryAuditDao {
+
+    @Override
+    public void writeAuditEntry(String entry) throws FlooringMasteryPersistenceException {
+        // do nothing
+    }
     
 }

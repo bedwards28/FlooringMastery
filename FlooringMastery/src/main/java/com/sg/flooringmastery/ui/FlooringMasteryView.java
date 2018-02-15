@@ -272,4 +272,8 @@ public class FlooringMasteryView {
         io.print("");
     }
 
+    public void displayTrainingBanner() {
+        io.print("SYSTEM IS IN TRAINING MODE. NO CHANGES CAN BE SAVED.");
+    }
+
 }

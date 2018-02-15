@@ -1,2 +1,2 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-2,Edwards,MN,6.25,Steel,100.00,5.15,4.75,515.00,475.00,61.88,1051.88
+2,Blake,PA,6.75,TILE,5000,3.50,4.15,17500.00,20750.00,2581.8750,40831.8750

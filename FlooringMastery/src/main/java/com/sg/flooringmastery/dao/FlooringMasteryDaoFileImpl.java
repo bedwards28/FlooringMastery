@@ -11,14 +11,19 @@ import com.sg.flooringmastery.dto.Product;
 import com.sg.flooringmastery.dto.Tax;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,10 +32,9 @@ import java.util.stream.Collectors;
  */
 public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
-    private final String CUSTOMER_FILE = "customers.txt";
     private final String TAX_FILE = "Taxes.txt";
     private final String PRODUCTS_FILE = "Products.txt";
-    private final String ORDER_HISTORY_FILE = "orderHistory.txt";
+    private final String SYSTEM_FILE = "System.txt";
 
     private final String ORDER_FILE_PREFIX = "orders/Orders_";
     private final String DELIMITER = ",";
@@ -51,20 +55,19 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         } finally {
             orderList.put(order.getOrderNumber(), order);
         }
-        
+
         return order;
     }
-    
+
 //    @Override
 //    public Order removeOrder(Order order) throws FlooringMasteryPersistenceException {
 //        Order removedOrder = orderList.remove(order.getOrderNumber());
 //        return removedOrder;
 //    }
-
-    @Override
-    public Order removeOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    public Order removeOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
     @Override
     public List<Order> getAllOrdersForDate(LocalDate date) throws FlooringMasteryPersistenceException {
@@ -82,39 +85,122 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         } catch (FlooringMasteryPersistenceException e) {
             return null;
         }
-        
+
         return orderList.get(orderId);
     }
 
-    @Override
-    public Order editOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    public Order editOrder(LocalDate date, int orderId) throws FlooringMasteryPersistenceException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
     @Override
     public void saveCurrentChanges() throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PrintWriter out;
+        Set<LocalDate> datesWritten = new HashSet<>();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMddyyyy");
+
+//        List<Order> filteredOrderList
+//                = orderList.values().stream()
+//                        .filter(o -> o.isDeleted() == false)
+//                        .collect(Collectors.toList());
+//        for (Order currentOrder : filteredOrderList) {
+        for (Order currentOrder : orderList.values()) {
+            LocalDate date = currentOrder.getOrderDate();
+            String fileName = ORDER_FILE_PREFIX + dateFormatter.format(date) + ".txt";
+
+            if (datesWritten.contains(date)) {
+                // append order to file
+                try {
+                    out = new PrintWriter(new FileWriter(fileName, true));
+                } catch (IOException e) {
+                    throw new FlooringMasteryPersistenceException(
+                            "Could not save order data to file.");
+                }
+
+                if (currentOrder.isDeleted() == false) {
+                    out.println(currentOrder.getOrderNumber() + DELIMITER
+                            + currentOrder.getCustomerName() + DELIMITER
+                            + currentOrder.getState() + DELIMITER
+                            + currentOrder.getTaxRate() + DELIMITER
+                            + currentOrder.getProductType() + DELIMITER
+                            + currentOrder.getArea() + DELIMITER
+                            + currentOrder.getCostPerSquareFoot() + DELIMITER
+                            + currentOrder.getLaborCostPerSquareFoot() + DELIMITER
+                            + currentOrder.getMaterialCost() + DELIMITER
+                            + currentOrder.getLaborCost() + DELIMITER
+                            + currentOrder.getTotalTax() + DELIMITER
+                            + currentOrder.getOrderTotal());
+                }
+
+                out.flush();
+                out.close();
+            } else {
+                // overwrite file with first order
+                try {
+                    out = new PrintWriter(new FileWriter(fileName));
+                } catch (IOException e) {
+                    throw new FlooringMasteryPersistenceException(
+                            "Could not save order data to file.");
+                }
+
+                // create header row
+                out.println("OrderNumber" + DELIMITER
+                        + "CustomerName" + DELIMITER
+                        + "State" + DELIMITER
+                        + "TaxRate" + DELIMITER
+                        + "ProductType" + DELIMITER
+                        + "Area" + DELIMITER
+                        + "CostPerSquareFoot" + DELIMITER
+                        + "LaborCostPerSquareFoot" + DELIMITER
+                        + "MaterialCost" + DELIMITER
+                        + "LaborCost" + DELIMITER
+                        + "Tax" + DELIMITER
+                        + "Total");
+
+                if (currentOrder.isDeleted() == false) {
+                    out.println(currentOrder.getOrderNumber() + DELIMITER
+                            + currentOrder.getCustomerName() + DELIMITER
+                            + currentOrder.getState() + DELIMITER
+                            + currentOrder.getTaxRate() + DELIMITER
+                            + currentOrder.getProductType() + DELIMITER
+                            + currentOrder.getArea() + DELIMITER
+                            + currentOrder.getCostPerSquareFoot() + DELIMITER
+                            + currentOrder.getLaborCostPerSquareFoot() + DELIMITER
+                            + currentOrder.getMaterialCost() + DELIMITER
+                            + currentOrder.getLaborCost() + DELIMITER
+                            + currentOrder.getTotalTax() + DELIMITER
+                            + currentOrder.getOrderTotal());
+                }
+
+                out.flush();
+                out.close();
+
+                // add date to datesWritten set
+                datesWritten.add(date);
+            }
+        }
     }
 
-    @Override
-    public Customer addCustomer(Customer customer) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Customer removeCustomer(int customerId) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Customer editCustomer(int customerId, Customer customer) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Customer> getAllCustomers() throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    public Customer addCustomer(Customer customer) throws FlooringMasteryPersistenceException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//
+//    @Override
+//    public Customer removeCustomer(int customerId) throws FlooringMasteryPersistenceException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//
+//    @Override
+//    public Customer editCustomer(int customerId, Customer customer) throws FlooringMasteryPersistenceException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//
+//    @Override
+//    public List<Customer> getAllCustomers() throws FlooringMasteryPersistenceException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
     @Override
     public Map<String, Product> getProductList() throws FlooringMasteryPersistenceException {
@@ -127,11 +213,26 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         loadStateTaxList();
         return stateTaxList;
     }
-
-//    private void loadAllFiles() {
-//
-//    }
     
+    @Override
+    public boolean getSystemState() throws FlooringMasteryPersistenceException {
+        Scanner scanner;
+        boolean isProduction = false;
+
+        try {
+            scanner = new Scanner(new File(SYSTEM_FILE));
+        } catch (FileNotFoundException e) {
+            throw new FlooringMasteryPersistenceException(
+                    "Could not load system file.");
+        }
+
+        if (scanner.hasNext()) {
+            isProduction = scanner.nextBoolean();
+        }
+
+        return isProduction;
+    }
+
     private void loadOrdersList(LocalDate date) throws FlooringMasteryPersistenceException {
 
         // clear out old data in order list before populating 
@@ -229,15 +330,15 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
             throw new FlooringMasteryPersistenceException(
                     "Could not load product list into memory", e);
         }
-        
+
         String currentLine;
         String[] currentTokens;
-        
+
         // clear header row
         if (scanner.hasNextLine()) {
             scanner.nextLine();
         }
-        
+
         while (scanner.hasNext()) {
             currentLine = scanner.nextLine();
             currentTokens = currentLine.split(DELIMITER);
@@ -247,7 +348,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
             currentProduct.setLaborCostPerSquareFoot(new BigDecimal(currentTokens[2]));
             productList.put(currentProduct.getProductType().toUpperCase(), currentProduct);
         }
-        
+
         scanner.close();
     } // end loadProductsList
 
@@ -266,5 +367,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
         return false;
     } // end isDateLoaded
+
+    
 
 }
