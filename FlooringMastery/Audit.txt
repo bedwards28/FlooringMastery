@@ -13,3 +13,4 @@
 2018-02-15T15:28:37.565 : InvalidProductException: OrderNumber:12, OrderDate=2018-02-15, State=MI, Product:FDSAFSD: 
 2018-02-15T15:32:48.083 : InvalidStateException: OrderNumber:13, OrderDate=2018-02-15, State=FDASF, Product:FDSAFSD: 
 2018-02-15T15:32:52.790 : InvalidProductException: OrderNumber:13, OrderDate=2018-02-15, State=PA, Product:FDSAFSD: 
+2018-02-16T15:18:38.704 : FlooringMasteryPersistenceException: 2018-02-16: 

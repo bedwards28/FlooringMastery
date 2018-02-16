@@ -6,11 +6,13 @@
 package com.sg.flooringmastery.dao;
 
 import com.sg.flooringmastery.dto.Order;
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -155,9 +157,23 @@ public class FlooringMasteryDaoTest {
      */
     @Test
     public void testSaveCurrentChanges() throws Exception {
-        // load test orders file Orders_01011990.txt
-        
-        // is this testable? or are implicit tests sufficient?
+        assertFalse(new File("orders/Orders_02162018.txt").exists());
+        Order newOrder = new Order(200);
+        newOrder.setOrderDate(LocalDate.now());
+        newOrder.setCustomerName("Test Customer");
+        newOrder.setState("MN");
+        newOrder.setTaxRate(new BigDecimal("10"));
+        newOrder.setProductType("TILE");
+        newOrder.setArea(new BigDecimal("100"));
+        newOrder.setCostPerSquareFoot(new BigDecimal("5"));
+        newOrder.setLaborCostPerSquareFoot(new BigDecimal("20"));
+        newOrder.setMaterialCost();
+        newOrder.setLaborCost();
+        newOrder.setTotalTax();
+        newOrder.setOrderTotal();
+        dao.addOrder(newOrder);
+        dao.saveCurrentChanges();
+        assertTrue(new File("orders/Orders_02162018.txt").exists());
     }
 
     /**

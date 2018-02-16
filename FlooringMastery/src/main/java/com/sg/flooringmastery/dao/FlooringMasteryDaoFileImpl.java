@@ -51,7 +51,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         } catch (FlooringMasteryPersistenceException e) {
             return orderList.put(order.getOrderNumber(), order);
         }
-        
+
         return orderList.put(order.getOrderNumber(), order);
 
     }
@@ -106,20 +106,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
                             "Could not save order data to file.");
                 }
 
-                if (currentOrder.isDeleted() == false) {
-                    out.println(currentOrder.getOrderNumber() + DELIMITER
-                            + currentOrder.getCustomerName() + DELIMITER
-                            + currentOrder.getState() + DELIMITER
-                            + currentOrder.getTaxRate() + DELIMITER
-                            + currentOrder.getProductType() + DELIMITER
-                            + currentOrder.getArea() + DELIMITER
-                            + currentOrder.getCostPerSquareFoot() + DELIMITER
-                            + currentOrder.getLaborCostPerSquareFoot() + DELIMITER
-                            + currentOrder.getMaterialCost() + DELIMITER
-                            + currentOrder.getLaborCost() + DELIMITER
-                            + currentOrder.getTotalTax() + DELIMITER
-                            + currentOrder.getOrderTotal());
-                }
+                writeOrder(currentOrder, out);
 
                 out.flush();
                 out.close();
@@ -132,39 +119,13 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
                             "Could not save order data to file.");
                 }
 
-                // create header row
-                out.println("OrderNumber" + DELIMITER
-                        + "CustomerName" + DELIMITER
-                        + "State" + DELIMITER
-                        + "TaxRate" + DELIMITER
-                        + "ProductType" + DELIMITER
-                        + "Area" + DELIMITER
-                        + "CostPerSquareFoot" + DELIMITER
-                        + "LaborCostPerSquareFoot" + DELIMITER
-                        + "MaterialCost" + DELIMITER
-                        + "LaborCost" + DELIMITER
-                        + "Tax" + DELIMITER
-                        + "Total");
+                writeOrderHeaderRow(out);
 
-                if (currentOrder.isDeleted() == false) {
-                    out.println(currentOrder.getOrderNumber() + DELIMITER
-                            + currentOrder.getCustomerName() + DELIMITER
-                            + currentOrder.getState() + DELIMITER
-                            + currentOrder.getTaxRate() + DELIMITER
-                            + currentOrder.getProductType() + DELIMITER
-                            + currentOrder.getArea() + DELIMITER
-                            + currentOrder.getCostPerSquareFoot() + DELIMITER
-                            + currentOrder.getLaborCostPerSquareFoot() + DELIMITER
-                            + currentOrder.getMaterialCost() + DELIMITER
-                            + currentOrder.getLaborCost() + DELIMITER
-                            + currentOrder.getTotalTax() + DELIMITER
-                            + currentOrder.getOrderTotal());
-                }
+                writeOrder(currentOrder, out);
 
                 out.flush();
                 out.close();
 
-                // add date to datesWritten set
                 datesWritten.add(date);
             }
         }
@@ -200,10 +161,42 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
         return isProduction;
     }
-    
+
     @Override
     public void clearOrderList() {
         orderList.clear();
+    }
+
+    private void writeOrder(Order order, PrintWriter out) {
+        if (order.isDeleted() == false) {
+            out.println(order.getOrderNumber() + DELIMITER
+                    + order.getCustomerName() + DELIMITER
+                    + order.getState() + DELIMITER
+                    + order.getTaxRate() + DELIMITER
+                    + order.getProductType() + DELIMITER
+                    + order.getArea() + DELIMITER
+                    + order.getCostPerSquareFoot() + DELIMITER
+                    + order.getLaborCostPerSquareFoot() + DELIMITER
+                    + order.getMaterialCost() + DELIMITER
+                    + order.getLaborCost() + DELIMITER
+                    + order.getTotalTax() + DELIMITER
+                    + order.getOrderTotal());
+        }
+    }
+    
+    private void writeOrderHeaderRow(PrintWriter out) {
+        out.println("OrderNumber" + DELIMITER
+                        + "CustomerName" + DELIMITER
+                        + "State" + DELIMITER
+                        + "TaxRate" + DELIMITER
+                        + "ProductType" + DELIMITER
+                        + "Area" + DELIMITER
+                        + "CostPerSquareFoot" + DELIMITER
+                        + "LaborCostPerSquareFoot" + DELIMITER
+                        + "MaterialCost" + DELIMITER
+                        + "LaborCost" + DELIMITER
+                        + "Tax" + DELIMITER
+                        + "Total");
     }
 
     private void loadOrdersList(LocalDate date) throws FlooringMasteryPersistenceException {
@@ -333,7 +326,5 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
         return false;
     } // end isDateLoaded
-    
-
 
 }
