@@ -49,14 +49,22 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         try {
             loadOrdersList(LocalDate.now());  // load current date file if needed before adding new order
         } catch (FlooringMasteryPersistenceException e) {
-            // This catch will never trigger.  The program needs to add the order to the orderList
-            // whether an exception was thrown or not.  An exception here means that no file was found
-            // for today's date.  The file is not a requirement to add an order to the orderList.
-        } finally {
-            orderList.put(order.getOrderNumber(), order);
+            return orderList.put(order.getOrderNumber(), order);
+        }
+        
+        return orderList.put(order.getOrderNumber(), order);
+
+    }
+
+    @Override
+    public Order removeOrder(Order order) throws FlooringMasteryPersistenceException {
+        try {
+            loadOrdersList(order.getOrderDate());
+        } catch (FlooringMasteryPersistenceException e) {
+            return orderList.remove(order.getOrderNumber());
         }
 
-        return order;
+        return orderList.remove(order.getOrderNumber());
     }
 
     @Override
@@ -173,7 +181,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         loadStateTaxList();
         return stateTaxList;
     }
-    
+
     @Override
     public boolean getSystemState() throws FlooringMasteryPersistenceException {
         Scanner scanner;
@@ -191,6 +199,11 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
         }
 
         return isProduction;
+    }
+    
+    @Override
+    public void clearOrderList() {
+        orderList.clear();
     }
 
     private void loadOrdersList(LocalDate date) throws FlooringMasteryPersistenceException {
@@ -320,5 +333,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
         return false;
     } // end isDateLoaded
+    
+
 
 }
