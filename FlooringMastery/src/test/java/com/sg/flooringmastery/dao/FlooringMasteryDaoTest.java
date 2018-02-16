@@ -8,11 +8,11 @@ package com.sg.flooringmastery.dao;
 import com.sg.flooringmastery.dto.Order;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -155,6 +155,9 @@ public class FlooringMasteryDaoTest {
      */
     @Test
     public void testSaveCurrentChanges() throws Exception {
+        // load test orders file Orders_01011990.txt
+        
+        // is this testable? or are implicit tests sufficient?
     }
 
     /**
@@ -162,6 +165,8 @@ public class FlooringMasteryDaoTest {
      */
     @Test
     public void testGetProductList() throws Exception {
+        // product file has 4 products
+        assertEquals(4, dao.getProductList().values().size());
     }
 
     /**
@@ -169,6 +174,8 @@ public class FlooringMasteryDaoTest {
      */
     @Test
     public void testGetStateTaxRatesList() throws Exception {
+        // state file has 4 states
+        assertEquals(4, dao.getStateTaxRatesList().values().size());
     }
 
     /**
@@ -176,6 +183,8 @@ public class FlooringMasteryDaoTest {
      */
     @Test
     public void testGetSystemState() throws Exception {
+        // file is set to prod
+        assertTrue(dao.getSystemState());
     }
     
 }
