@@ -159,7 +159,7 @@ public class FlooringMasteryController {
             view.displayOrder(removedOrder);
             commit = view.promptUserToCommitDelete();
             if (commit) {
-                removedOrder.setDeleted(true);
+                service.deleteOrder(removedOrder);
                 view.displayMarkedForDeleteBanner();
             }
         } else {
@@ -171,6 +171,7 @@ public class FlooringMasteryController {
         boolean isProduction = service.getSystemState();
         if (isProduction) {
             service.saveCurrentChanges();
+            view.displaySaveSuccessBanner();
         } else {
             view.displayTrainingBanner();
         }

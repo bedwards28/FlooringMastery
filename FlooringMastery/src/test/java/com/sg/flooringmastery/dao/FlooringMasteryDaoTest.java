@@ -9,11 +9,11 @@ import com.sg.flooringmastery.dto.Order;
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -96,15 +96,10 @@ public class FlooringMasteryDaoTest {
         order.setOrderTotal();
         dao.addOrder(order);
         
-        assertEquals(1, dao.getAllOrdersForDate(order.getOrderDate()).size());
-        Order removeOrder = dao.removeOrder(order);
-        assertEquals(0, dao.getAllOrdersForDate(order.getOrderDate()).size());
-        assertEquals(removeOrder, order);
+        assertFalse(order.isDeleted());
         
-        Order order2 = new Order(200);
-        order2.setOrderDate(LocalDate.of(1990, 1, 1));
-        removeOrder = dao.removeOrder(order2);
-        assertNull(removeOrder);
+        dao.removeOrder(order);
+        assertTrue(order.isDeleted());
     }
 
     /**
@@ -148,6 +143,7 @@ public class FlooringMasteryDaoTest {
         
         dao.removeOrder(order);
         dao.removeOrder(order2);
+        dao.saveCurrentChanges();
         assertEquals(0, dao.getAllOrdersForDate(LocalDate.of(1990, 1, 1)).size());
         
     }
@@ -173,7 +169,11 @@ public class FlooringMasteryDaoTest {
         newOrder.setOrderTotal();
         dao.addOrder(newOrder);
         dao.saveCurrentChanges();
-        assertTrue(new File("orders/Orders_02162018.txt").exists());
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
+        String dateString = formatter.format(LocalDate.now());
+        String fileName = "orders/Orders_" + dateString + ".txt";
+        assertTrue(new File(fileName).exists());
     }
 
     /**
@@ -201,6 +201,43 @@ public class FlooringMasteryDaoTest {
     public void testGetSystemState() throws Exception {
         // file is set to prod
         assertTrue(dao.getSystemState());
+    }
+    
+    @Test
+    public void testClearOrderList() throws Exception {
+        Order order = new Order(100);
+        order.setOrderDate(LocalDate.of(1990, 1, 1));
+        order.setCustomerName("Test Customer");
+        order.setState("MN");
+        order.setTaxRate(new BigDecimal("10"));
+        order.setProductType("TILE");
+        order.setArea(new BigDecimal("100"));
+        order.setCostPerSquareFoot(new BigDecimal("5"));
+        order.setLaborCostPerSquareFoot(new BigDecimal("20"));
+        order.setMaterialCost();
+        order.setLaborCost();
+        order.setTotalTax();
+        order.setOrderTotal();
+        dao.addOrder(order);
+        
+        Order order2 = new Order(200);
+        order2.setOrderDate(LocalDate.of(1990, 1, 1));
+        order2.setCustomerName("Test Customer2");
+        order2.setState("MN");
+        order2.setTaxRate(new BigDecimal("1"));
+        order2.setProductType("TILE");
+        order2.setArea(new BigDecimal("1000"));
+        order2.setCostPerSquareFoot(new BigDecimal("50"));
+        order2.setLaborCostPerSquareFoot(new BigDecimal("25"));
+        order2.setMaterialCost();
+        order2.setLaborCost();
+        order2.setTotalTax();
+        order2.setOrderTotal();
+        dao.addOrder(order2);
+        
+        assertEquals(2, dao.getOrderList().values().size());
+        dao.clearOrderList();
+        assertEquals(0, dao.getOrderList().values().size());
     }
     
 }

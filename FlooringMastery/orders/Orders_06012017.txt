@@ -1,2 +1,0 @@
-OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-2,Blake,PA,6.75,TILE,5000,3.50,4.15,17500.00,20750.00,2581.8750,40831.8750

@@ -41,6 +41,18 @@
     
     <aop:config>
         <aop:aspect ref="loggingAdvice">
+            <aop:after-returning 
+                method="createAuditEntry"
+                pointcut="execution(* com.sg.flooringmastery.service.FlooringMasteryServiceLayer.saveOrder(..))"
+            />
+            <aop:after-returning
+                method="createAuditEntry"
+                pointcut="execution(* com.sg.flooringmastery.service.FlooringMasteryServiceLayer.deleteOrder(..))"
+            />
+            <aop:after-returning
+                method="createAuditEntry"
+                pointcut="execution(* com.sg.flooringmastery.service.FlooringMasteryServiceLayer.saveCurrentChanges(..))"
+            />
             <aop:after-throwing 
                 method="createExceptionAuditEntry" 
                 pointcut="execution(* com.sg.flooringmastery.service.FlooringMasteryServiceLayer.*(..))"

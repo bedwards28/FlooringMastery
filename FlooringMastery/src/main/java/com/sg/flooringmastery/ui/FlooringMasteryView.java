@@ -91,6 +91,7 @@ public class FlooringMasteryView {
     public void displayOrder(Order order) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
+        io.print("");
         io.print("*****  Order Summary *****");
         io.print("Order No: " + order.getOrderNumber() + "\n"
                 + "Customer: " + order.getCustomerName() + "\n"
@@ -220,6 +221,7 @@ public class FlooringMasteryView {
     }
 
     public void displayMarkedForDeleteBanner() {
+        io.print("");
         io.print("*****  Order is marked for deletion  *****");
         io.print("Select option 5 from the main menu to make the deletion permanent.");
     }
@@ -230,6 +232,7 @@ public class FlooringMasteryView {
     }
 
     public Order promptUserForEdits(Order editOrder) {
+        io.print("");
         io.print("Enter edits below.  Hitting enter without making edits will retain original order information.");
         io.print("The original order information is in parentheses.");
         String customerName = io.readString("Enter customer name (" + editOrder.getCustomerName() + "): ");
@@ -290,6 +293,11 @@ public class FlooringMasteryView {
                     break;
             }
         }
+    }
+    
+    public void displaySaveSuccessBanner() {
+        io.print("");
+        io.print("All changes saved successfully.");
     }
 
 }

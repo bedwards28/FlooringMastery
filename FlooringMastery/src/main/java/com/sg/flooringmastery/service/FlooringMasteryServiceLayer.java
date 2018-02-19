@@ -41,4 +41,6 @@ public interface FlooringMasteryServiceLayer {
 
     public void saveCurrentChanges() throws FlooringMasteryPersistenceException;
     
+    public Order deleteOrder(Order order) throws FlooringMasteryPersistenceException;
+    
 }

@@ -58,13 +58,8 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
     @Override
     public Order removeOrder(Order order) throws FlooringMasteryPersistenceException {
-        try {
-            loadOrdersList(order.getOrderDate());
-        } catch (FlooringMasteryPersistenceException e) {
-            return orderList.remove(order.getOrderNumber());
-        }
-
-        return orderList.remove(order.getOrderNumber());
+        order.setDeleted(true);
+        return order;
     }
 
     @Override
@@ -129,6 +124,10 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
                 datesWritten.add(date);
             }
         }
+        
+        orderList.values().removeIf(o -> o.isDeleted() == true);
+        
+        
     } // end saveCurrentChanges
 
     @Override
@@ -168,7 +167,7 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
     }
 
     private void writeOrder(Order order, PrintWriter out) {
-        if (order.isDeleted() == false) {
+        if (!order.isDeleted()) {
             out.println(order.getOrderNumber() + DELIMITER
                     + order.getCustomerName() + DELIMITER
                     + order.getState() + DELIMITER
@@ -183,20 +182,20 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
                     + order.getOrderTotal());
         }
     }
-    
+
     private void writeOrderHeaderRow(PrintWriter out) {
         out.println("OrderNumber" + DELIMITER
-                        + "CustomerName" + DELIMITER
-                        + "State" + DELIMITER
-                        + "TaxRate" + DELIMITER
-                        + "ProductType" + DELIMITER
-                        + "Area" + DELIMITER
-                        + "CostPerSquareFoot" + DELIMITER
-                        + "LaborCostPerSquareFoot" + DELIMITER
-                        + "MaterialCost" + DELIMITER
-                        + "LaborCost" + DELIMITER
-                        + "Tax" + DELIMITER
-                        + "Total");
+                + "CustomerName" + DELIMITER
+                + "State" + DELIMITER
+                + "TaxRate" + DELIMITER
+                + "ProductType" + DELIMITER
+                + "Area" + DELIMITER
+                + "CostPerSquareFoot" + DELIMITER
+                + "LaborCostPerSquareFoot" + DELIMITER
+                + "MaterialCost" + DELIMITER
+                + "LaborCost" + DELIMITER
+                + "Tax" + DELIMITER
+                + "Total");
     }
 
     private void loadOrdersList(LocalDate date) throws FlooringMasteryPersistenceException {
@@ -326,5 +325,10 @@ public class FlooringMasteryDaoFileImpl implements FlooringMasteryDao {
 
         return false;
     } // end isDateLoaded
+
+    @Override
+    public Map<Integer, Order> getOrderList() {
+        return orderList;
+    }
 
 }

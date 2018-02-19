@@ -35,5 +35,7 @@ public interface FlooringMasteryDao {
     boolean getSystemState() throws FlooringMasteryPersistenceException;
     
     void clearOrderList();
+    
+    Map<Integer, Order> getOrderList();
 
 }

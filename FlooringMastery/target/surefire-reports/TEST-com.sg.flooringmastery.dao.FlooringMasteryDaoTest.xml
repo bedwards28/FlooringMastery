@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="0" name="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" time="0.471" errors="0" skipped="0">
+<testsuite tests="8" failures="0" name="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" time="0.529" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_151\jre\bin"/>
@@ -62,11 +62,12 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testRemoveOrder" time="0.062"/>
-  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testGetStateTaxRatesList" time="0"/>
-  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testAddGetOrder" time="0"/>
-  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testGetSystemState" time="0"/>
+  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testRemoveOrder" time="0.054"/>
+  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testGetStateTaxRatesList" time="0.009"/>
+  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testAddGetOrder" time="0.001"/>
+  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testGetSystemState" time="0.01"/>
   <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testGetProductList" time="0"/>
-  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testGetAllOrdersForDate" time="0"/>
-  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testSaveCurrentChanges" time="0"/>
+  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testClearOrderList" time="0.003"/>
+  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testGetAllOrdersForDate" time="0.022"/>
+  <testcase classname="com.sg.flooringmastery.dao.FlooringMasteryDaoTest" name="testSaveCurrentChanges" time="0.002"/>
 </testsuite>
